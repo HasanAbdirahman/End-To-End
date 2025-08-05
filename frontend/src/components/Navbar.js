@@ -10,6 +10,7 @@ const Navbar = ({ onLogout }) => {
       {isAuthenticated() ? (
         <>
           <Link className={styles.link} to="/dashboard">Dashboard</Link> |{' '}
+          <Link to="/posts" className={styles.link}>Posts</Link>
           <button className={styles.button} onClick={() => { removeUser(); onLogout(); }}>
             Logout
           </button>
