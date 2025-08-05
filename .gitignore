@@ -1,0 +1,60 @@
+# Node modules
+node_modules/
+
+# Build output
+dist/
+build/
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# IDE settings
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# Test coverage
+coverage/
+
+# OS & Editor junk
+*.log
+*.swp
+*.tmp
+*~
+
+# Mac/Linux hidden files
+*.bak
+*.orig
+
+# Optional: prevent localStorage data in repo (e.g. Vite preview cache)
+.vite/
+
+# Optional: ignore ESLint cache
+.eslintcache
+
+# Optional: Parcel cache
+.cache/
+
+# Optional: lock file backups
+package-lock.json.*
+yarn.lock.*
+pnpm-lock.yaml.*
+
+# Storybook static
+storybook-static/

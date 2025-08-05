@@ -1,26 +1,71 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { NavLink } from 'react-router-dom';
 import { isAuthenticated, removeUser } from '../utils/auth';
 import styles from './Navbar.module.css';
 
 const Navbar = ({ onLogout }) => {
+  const [darkMode, setDarkMode] = useState(() =>
+    localStorage.getItem('darkMode') === 'true'
+  );
+
+  useEffect(() => {
+    localStorage.setItem('darkMode', darkMode);
+    document.body.className = darkMode ? 'dark' : '';
+  }, [darkMode]);
+
+  const handleLogout = () => {
+    removeUser();
+    onLogout();
+  };
+
   return (
     <nav className={styles.navbar}>
-      <Link to="/">Home</Link> |{' '}
+      <NavLink
+        to="/"
+        className={({ isActive }) => (isActive ? styles.activeLink : styles.link)}
+      >
+        Home
+      </NavLink>
+
       {isAuthenticated() ? (
         <>
-          <Link className={styles.link} to="/dashboard">Dashboard</Link> |{' '}
-          <Link to="/posts" className={styles.link}>Posts</Link>
-          <button className={styles.button} onClick={() => { removeUser(); onLogout(); }}>
+          <NavLink
+            to="/dashboard"
+            className={({ isActive }) => (isActive ? styles.activeLink : styles.link)}
+          >
+            Dashboard
+          </NavLink>
+          <NavLink
+            to="/posts"
+            className={({ isActive }) => (isActive ? styles.activeLink : styles.link)}
+          >
+            Posts
+          </NavLink>
+          <button onClick={handleLogout} className={styles.button}>
             Logout
           </button>
         </>
       ) : (
         <>
-          <Link to="/login">Login</Link> |{' '}
-          <Link to="/signup">Signup</Link>
+          <NavLink
+            to="/login"
+            className={({ isActive }) => (isActive ? styles.activeLink : styles.link)}
+          >
+            Login
+          </NavLink>
+          <NavLink
+            to="/signup"
+            className={({ isActive }) => (isActive ? styles.activeLink : styles.link)}
+          >
+            Signup
+          </NavLink>
         </>
       )}
+
+      {/* Dark Mode Toggle Button */}
+      <button onClick={() => setDarkMode(!darkMode)} className={styles.button}>
+        {darkMode ? 'Light Mode' : 'Dark Mode'}
+      </button>
     </nav>
   );
 };
