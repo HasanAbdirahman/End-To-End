@@ -1,5 +1,5 @@
 import React from 'react';
-import { getUser } from '../../utils/auth';
+import { getUser } from '../utils/auth';
 import styles from './Dashboard.module.css';
 
 const Dashboard = () => {
