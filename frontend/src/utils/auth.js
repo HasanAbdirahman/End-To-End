@@ -1,13 +1,13 @@
 export const setUser = (user) => {
-  localStorage.setItem('user', JSON.stringify(user));
+  localStorage.setItem('currentUser', JSON.stringify(user));
 };
 
 export const getUser = () => {
-  return JSON.parse(localStorage.getItem('user'));
+  return JSON.parse(localStorage.getItem('currentUser'));
 };
 
 export const removeUser = () => {
-  localStorage.removeItem('user');
+  localStorage.removeItem('currentUser');
 };
 
 export const isAuthenticated = () => {
