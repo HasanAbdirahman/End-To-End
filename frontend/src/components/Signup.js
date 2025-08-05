@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import styles from './Login.module.css'; // reusing login styles
+import styles from './Login.module.css';
 
-const Signup = () => {
+const Signup = ({ onSignup }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
@@ -16,33 +16,35 @@ const Signup = () => {
       return;
     }
 
-    users.push({ email, password });
+    const newUser = { email, password };
+    users.push(newUser);
     localStorage.setItem('users', JSON.stringify(users));
-    alert('Signup successful!');
-    navigate('/login');
+    localStorage.setItem('currentUser', JSON.stringify(newUser));
+    onSignup(); // update auth in App
+    navigate('/dashboard');
   };
 
   return (
     <div className={styles.container}>
-      <form onSubmit={handleSignup} className={styles.card}>
+      <form className={styles.card} onSubmit={handleSignup}>
         <h2>Signup</h2>
         <input
           className={styles.input}
+          type="email"
+          placeholder="Email"
           value={email}
           onChange={e => setEmail(e.target.value)}
-          placeholder="Email"
-          type="email"
           required
         />
         <input
           className={styles.input}
+          type="password"
+          placeholder="Password"
           value={password}
           onChange={e => setPassword(e.target.value)}
-          placeholder="Password"
-          type="password"
           required
         />
-        <button type="submit" className={styles.button}>Signup</button>
+        <button className={styles.button} type="submit">Signup</button>
       </form>
     </div>
   );

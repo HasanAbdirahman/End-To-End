@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { setUser } from '../utils/auth';
 import styles from './Login.module.css';
 
 const Login = ({ onLogin }) => {
@@ -10,39 +9,37 @@ const Login = ({ onLogin }) => {
 
   const handleLogin = (e) => {
     e.preventDefault();
+    const users = JSON.parse(localStorage.getItem('users')) || [];
+    const user = users.find(u => u.email === email.trim() && u.password === password.trim());
 
-    const userData = JSON.parse(localStorage.getItem('users')) || [];
-    const matched = userData.find(
-      user => user.email === email && user.password === password
-    );
-
-    if (matched) {
-      setUser({ email });
-      onLogin(); // update auth state in App.js
-      navigate('/dashboard');
-    } else {
-      alert('Invalid email or password');
+    if (!user) {
+      alert('Invalid credentials!');
+      return;
     }
+
+    localStorage.setItem('currentUser', JSON.stringify(user));
+    onLogin(); // update auth in App
+    navigate('/dashboard');
   };
 
   return (
     <div className={styles.container}>
-      <form onSubmit={handleLogin} className={styles.card}>
+      <form className={styles.card} onSubmit={handleLogin}>
         <h2>Login</h2>
         <input
           className={styles.input}
           type="email"
+          placeholder="Email"
           value={email}
           onChange={e => setEmail(e.target.value)}
-          placeholder="Email"
           required
         />
         <input
           className={styles.input}
           type="password"
+          placeholder="Password"
           value={password}
           onChange={e => setPassword(e.target.value)}
-          placeholder="Password"
           required
         />
         <button className={styles.button} type="submit">Login</button>

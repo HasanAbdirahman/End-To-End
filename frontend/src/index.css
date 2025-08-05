@@ -3,10 +3,8 @@ body {
   margin: 0;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background-color: #f1f5f9;
-}
-body.dark {
-  background-color: #121212;
-  color: #e0e0e0;
+  transition: background-color 0.3s ease, color 0.3s ease;
+
 }
 
 body.dark a {
@@ -15,4 +13,17 @@ body.dark a {
 
 body.dark nav {
   background-color: #1f2937; /* darker navbar */
+}
+
+
+body {
+  background: white;
+  margin: 0;
+  font-family: sans-serif;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+body.dark {
+  background: #121212;
+  color: #f1f1f1;
 }
