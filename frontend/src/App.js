@@ -14,11 +14,11 @@ const App = () => {
       <Navbar onLogout={() => setAuth(false)} />
       <Routes>
         <Route path="/" element={<h1>Home Page</h1>} />
-        <Route path="/login" element={<Login />} />
+        <Route path="/login" element={<Login onLogin={() => setAuth(true)} />} />
         <Route path="/signup" element={<Signup />} />
         <Route
           path="/dashboard"
-          element={isAuthenticated() ? <Dashboard /> : <Navigate to="/login" />}
+          element={auth ? <Dashboard /> : <Navigate to="/login" />}
         />
       </Routes>
     </Router>

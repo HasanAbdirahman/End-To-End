@@ -1,15 +1,16 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { isAuthenticated, removeUser } from '../utils/auth';
+import styles from './Navbar.module.css';
 
 const Navbar = ({ onLogout }) => {
   return (
-    <nav>
+    <nav className={styles.navbar}>
       <Link to="/">Home</Link> |{' '}
       {isAuthenticated() ? (
         <>
-          <Link to="/dashboard">Dashboard</Link> |{' '}
-          <button onClick={() => { removeUser(); onLogout(); }}>
+          <Link className={styles.link} to="/dashboard">Dashboard</Link> |{' '}
+          <button className={styles.button} onClick={() => { removeUser(); onLogout(); }}>
             Logout
           </button>
         </>
