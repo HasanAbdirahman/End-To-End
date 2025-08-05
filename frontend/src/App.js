@@ -5,6 +5,8 @@ import Login from './components/Login';
 import Signup from './components/Signup';
 import Dashboard from './components/Dashboard';
 import { isAuthenticated } from './utils/auth';
+import Posts from './components/Posts';
+
 
 const App = () => {
   const [auth, setAuth] = useState(isAuthenticated());
@@ -20,6 +22,8 @@ const App = () => {
           path="/dashboard"
           element={auth ? <Dashboard /> : <Navigate to="/login" />}
         />
+        <Route path="/posts" element={auth ? <Posts /> : <Navigate to="/login" />} />
+
       </Routes>
     </Router>
   );
