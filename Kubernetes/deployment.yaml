@@ -1,18 +1,18 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: nginx-deployment
+  name: end-to-end
   labels:
-    app: nginx
+    app: end-to-end
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: nginx
+      app: end-to-end
   template:
     metadata:
       labels:
-        app: nginx
+        app: end-to-end
     spec:
       containers:
       - name: end-end
@@ -20,5 +20,5 @@ spec:
         ports:
         - containerPort: 80
     
-      imagePullRequest:
+      imagePullSecrets:
         - name: myregistrykey
