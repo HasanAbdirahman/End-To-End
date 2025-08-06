@@ -21,4 +21,4 @@ spec:
         - containerPort: 80
     
       imagePullRequest:
-        - name: 
+        - name: myregistrykey
