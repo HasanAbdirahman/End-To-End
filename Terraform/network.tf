@@ -20,6 +20,7 @@ resource "aws_subnet" "Terra-Public-Subnets" {
   vpc_id            = aws_vpc.Terra-VPC.id
   cidr_block        = var.subnet_cidrs[count.index]
   availability_zone = data.aws_availability_zones.available.names[count.index]
+  map_public_ip_on_launch = true
 
   tags = {
     Name = "Terra-Public-Subnet-${count.index + 1}"
