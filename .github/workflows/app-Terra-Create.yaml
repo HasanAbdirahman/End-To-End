@@ -1,7 +1,7 @@
 name: Full Infrastructure and App Deployment
 
 on:
-  workflow_dispatch:
+  push:
     branches:
       - main
 
