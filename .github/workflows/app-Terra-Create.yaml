@@ -1,122 +1,21 @@
-# name: Full Infrastructure and App Deployment
-
-# on:
-#   push:
-#     branches:
-#       - main
-
-# jobs:
-#   terraform:
-#     name: Terraform Infrastructure Provisioning
-#     runs-on: ubuntu-latest
-
-#     steps:
-#       - name: Checkout code
-#         uses: actions/checkout@v4
-      
-#       - name: Debug files
-#         run: ls -R
-
-#       - name: Set up Terraform
-#         uses: hashicorp/setup-terraform@v3
-#         with:
-#           terraform_version: 1.8.0
-
-#       - name: Configure AWS credentials
-#         uses: aws-actions/configure-aws-credentials@v3
-#         with:
-#           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-#           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-#           aws-region: us-east-1
-      
-#       - name: Clean Terraform
-#         run: |
-#           rm -rf .terraform .terraform.lock.hcl
-
-#       - name: Terraform Init
-#         run: |
-#           cd Terraform
-#           terraform init
-
-#       - name: Terraform Plan
-#         run: |
-#           cd Terraform
-#           terraform plan
-
-#       - name: Terraform Apply
-#         run: |
-#           cd Terraform
-#           terraform apply -auto-approve
-
-
-#   app:
-#     name: Kubernetes App Deployment
-#     needs: terraform   
-#     runs-on: ubuntu-latest
-
-#     steps:
-#       - name: Checkout code
-#         uses: actions/checkout@v4
-
-#       - name: Set up Node.js
-#         uses: actions/setup-node@v4
-#         with:
-#           node-version: 18
-
-#       - name: Install dependencies and build frontend
-#         run: |
-#           cd frontend
-#           npm install
-#           npm run build
-
-#       - name: Configure AWS credentials
-#         uses: aws-actions/configure-aws-credentials@v3
-#         with:
-#           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-#           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-#           region: us-east-1
-
-#       - name: Set up kubectl
-#         uses: azure/setup-kubectl@v3
-#         with:
-#           version: 'latest'
-
-#       - name: Update kubeconfig
-#         run: |
-#           aws eks update-kubeconfig --region us-east-1 --name terra-eks-cluster
-
-#       - name: Create Docker registry secret in Kubernetes
-#         env:
-#           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-#           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-#           DOCKER_EMAIL: ${{secrets.DOCKER_EMAIL}}
-#         run: |
-#           kubectl create secret docker-registry myregistrykey \
-#             --docker-server=https://index.docker.io/v1/ \
-#             --docker-username=$DOCKER_USERNAME \
-#             --docker-password=$DOCKER_PASSWORD \
-#             --docker-email=$DOCKER_EMAIL \
-#             --namespace=default \
-#             --dry-run=client -o yaml | kubectl apply -f -
-
-#       - name: Deploy Kubernetes manifests
-#         run: |
-#           kubectl apply -f Kubernetes/deployment.yaml
-#           kubectl apply -f Kubernetes/Service.yaml
-
-name: Destroy EKS Cluster and Infrastructure
+name: Full Infrastructure and App Deployment
 
 on:
-  workflow_dispatch:  # Allows manual execution from GitHub UI
+  push:
+    branches:
+      - main
 
 jobs:
-  destroy:
-    name: Terraform Destroy
+  terraform:
+    name: Terraform Infrastructure Provisioning
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+      
+      - name: Debug files
+        run: ls -R
 
       - name: Set up Terraform
         uses: hashicorp/setup-terraform@v3
@@ -129,7 +28,7 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
-
+      
       - name: Clean Terraform
         run: |
           rm -rf .terraform .terraform.lock.hcl
@@ -139,7 +38,68 @@ jobs:
           cd Terraform
           terraform init
 
-      - name: Terraform Destroy
+      - name: Terraform Plan
         run: |
           cd Terraform
-          terraform destroy -auto-approve
+          terraform plan
+
+      - name: Terraform Apply
+        run: |
+          cd Terraform
+          terraform apply -auto-approve
+
+
+  app:
+    name: Kubernetes App Deployment
+    needs: terraform   
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install dependencies and build frontend
+        run: |
+          cd frontend
+          npm install
+          npm run build
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          region: us-east-1
+
+      - name: Set up kubectl
+        uses: azure/setup-kubectl@v3
+        with:
+          version: 'latest'
+
+      - name: Update kubeconfig
+        run: |
+          aws eks update-kubeconfig --region us-east-1 --name terra-eks-cluster
+
+      - name: Create Docker registry secret in Kubernetes
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+          DOCKER_EMAIL: ${{secrets.DOCKER_EMAIL}}
+        run: |
+          kubectl create secret docker-registry myregistrykey \
+            --docker-server=https://index.docker.io/v1/ \
+            --docker-username=$DOCKER_USERNAME \
+            --docker-password=$DOCKER_PASSWORD \
+            --docker-email=$DOCKER_EMAIL \
+            --namespace=default \
+            --dry-run=client -o yaml | kubectl apply -f -
+
+      - name: Deploy Kubernetes manifests
+        run: |
+          kubectl apply -f Kubernetes/deployment.yaml
+          kubectl apply -f Kubernetes/Service.yaml
