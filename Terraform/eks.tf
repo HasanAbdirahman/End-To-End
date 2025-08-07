@@ -1,7 +1,7 @@
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
-  version = "~> 21.0"
-
+  version = "21.0.0"
+  
   name               = "terra-eks-cluster"
   kubernetes_version = "1.30"
 
@@ -9,9 +9,8 @@ module "eks" {
   vpc_id     = aws_vpc.Terra-VPC.id
   subnet_ids = aws_subnet.Terra-Public-Subnets[*].id
 
-  # Disable creation of IAM role and provide your own
-  create_cluster_iam_role = false
-  cluster_iam_role_name   = aws_iam_role.eks_cluster_role.name
+  # Use custom IAM role for EKS cluster control plane
+  cluster_additional_iam_roles = [ aws_iam_role.eks_cluster_role.arn ]
 
   # EKS managed node groups
   eks_managed_node_groups = {
