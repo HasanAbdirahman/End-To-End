@@ -1,3 +1,7 @@
+data "aws_availability_zones" "available" {
+  state = "available"
+}
+
 resource "aws_vpc" "Terra-VPC" {
   cidr_block = "10.0.0.0/16"
 
@@ -9,6 +13,7 @@ resource "aws_vpc" "Terra-VPC" {
     Terraform   = local.Terraform
   }
 }
+
 
 resource "aws_subnet" "Terra-Public-Subnets" {
   count             = var.subnet_count
