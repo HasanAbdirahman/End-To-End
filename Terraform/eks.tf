@@ -7,9 +7,11 @@ module "eks" {
 
   # Network configuration
   vpc_id     = aws_vpc.Terra-VPC.id
-  subnet_ids = aws_subnet.Terra-Public-Subnets[*].id 
+  subnet_ids = aws_subnet.Terra-Public-Subnets[*].id
 
-  cluster_iam_role_arn = aws_iam_role.eks_cluster_role.arn
+  # Disable creation of IAM role and provide your own
+  create_cluster_iam_role = false
+  cluster_iam_role_name   = aws_iam_role.eks_cluster_role.name
 
   # EKS managed node groups
   eks_managed_node_groups = {
@@ -22,11 +24,8 @@ module "eks" {
     }
   }
 
-  # Enable IAM Roles for Service Accounts (IRSA)
   enable_irsa = false
 
- 
-  # Optional tags
   tags = {
     Environment = local.Environment
     Project     = local.Project
