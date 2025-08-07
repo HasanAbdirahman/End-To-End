@@ -7,7 +7,7 @@ on:
 
 jobs:
   terraform:
-    name: Terraform Infrastructure Provisioning
+    name: Terraform Infrastructure Provisioning.
     runs-on: ubuntu-latest
 
     steps:
