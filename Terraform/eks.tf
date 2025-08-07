@@ -9,8 +9,9 @@ module "eks" {
   vpc_id     = aws_vpc.Terra-VPC.id
   subnet_ids = aws_subnet.Terra-Public-Subnets[*].id
 
-  # Use custom IAM role for EKS cluster control plane
-  cluster_additional_iam_roles = [ aws_iam_role.eks_cluster_role.arn ]
+  # Use your custom IAM role for the EKS control plane
+  create_iam_role = false
+  iam_role_arn    = aws_iam_role.eks_cluster_role.arn
 
   # EKS managed node groups
   eks_managed_node_groups = {
