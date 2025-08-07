@@ -104,10 +104,10 @@
 #           kubectl apply -f Kubernetes/deployment.yaml
 #           kubectl apply -f Kubernetes/Service.yaml
 
-name: Destroy EKS Infrastructure
+name: Destroy EKS Cluster and Infrastructure
 
 on:
-  workflow_dispatch:  # Manual trigger
+  workflow_dispatch:  # Allows manual execution from GitHub UI
 
 jobs:
   destroy:
