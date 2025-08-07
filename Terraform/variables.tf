@@ -1,4 +1,4 @@
-variable subnets_counts {
+variable subnet_counts {
     type =  number
     default =  2
 }

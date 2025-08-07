@@ -30,6 +30,6 @@ module "eks" {
     Environment = local.Environment
     Project     = local.Project
     Owner       = local.Owner
-    Terraform   = local.terraform
+    Terraform   = local.Terraform
   }
 }

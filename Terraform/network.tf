@@ -3,6 +3,10 @@ resource "aws_vpc" "Terra-VPC" {
 
   tags = {
     Name = "Terra-VPC"
+    Environment = local.Environment
+    Project     = local.Project
+    Owner       = local.Owner
+    Terraform   = local.Terraform
   }
 }
 
@@ -14,6 +18,10 @@ resource "aws_subnet" "Terra-Public-Subnets" {
 
   tags = {
     Name = "Terra-Public-Subnet-${count.index + 1}"
+    Environment = local.Environment
+    Project     = local.Project
+    Owner       = local.Owner
+    Terraform   = local.Terraform
   }
 }
 
@@ -35,6 +43,10 @@ resource "aws_route_table" "Terra-RT" {
 
   tags = {
     Name = "Terra-RT"
+    Environment = local.Environment
+    Project     = local.Project
+    Owner       = local.Owner
+    Terraform   = local.Terraform
   }
 }
 
