@@ -9,7 +9,7 @@ module "eks" {
   vpc_id     = aws_vpc.Terra-VPC.id
   subnet_ids = aws_subnet.Terra-Public-Subnets[*].id 
 
-  cluster_role_arn = aws_iam_role.eks_cluster_role.arn
+  cluster_iam_role_arn = aws_iam_role.eks_cluster_role.arn
 
   # EKS managed node groups
   eks_managed_node_groups = {
